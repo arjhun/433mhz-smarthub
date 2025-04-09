@@ -1,23 +1,10 @@
-#include "secrets.h"
-#include "autodiscoverlight.h"
+#include <433_hub_mqtt_discovery.h>
 #include <ESP8266WiFi.h>
 #include <Ticker.h>
 #include <ArduinoJson.h>
 #include <Arduino.h>
 #include <sf501-remote.h> //https://github.com/arjhun/arduino-sf501remote
-#include <AsyncMqtt_Generic.h>  //https://github.com/khoih-prog/AsyncMQTT_Generic#installation
 #include <CircularBuffer.h> // https://github.com/rlogiacco/CircularBuffer
-
-void connectToWifi();
-void connectToMqtt();
-void onMqttConnect(bool sessionPresent);
-void sendDiscoveryHubSensors();
-void sendDiscoveryLight(AutoDiscoverLight light);
-void onMqttDisconnect(AsyncMqttClientDisconnectReason reason);
-void onMqttSubscribe(uint16_t packetId, uint8_t qos);
-void onMqttUnsubscribe(uint16_t packetId);
-void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total);
-void onMqttPublish(uint16_t packetId);
 
 //create a file secrets.h with the following
 /*
@@ -34,12 +21,13 @@ void onMqttPublish(uint16_t packetId);
 */
 
 //<discovery_prefix>/<component>/[<node_id>/]<object_id>/config
-const String discoveryTopic = "homeassistantArjenTest";
+
+const String discoveryTopic = "homeassistantArjenTest"; //replace with your discoverytopic
 const String nodeId = "/433mhzhub";
 
 const int status_interval = 300;
 const String commandTopic = "set";
-const String statusTopic = "stat"; 
+const String statusTopic = "stat";
 
 AutoDiscoverLight light1;
 AutoDiscoverLight light2;
@@ -146,7 +134,7 @@ void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties 
   //   }
 
   //   Sf501Packet packet;
-  //   packet.remoteId = sTopic.substring(i+mainTopic.length(), sTopic.lastIndexOf("/")).toInt();
+  //   packet.remoteId = 1;
   //   if(sPayload == "ON") packet.state = 1;
   //   else if (sPayload == "OFF") packet.state = 0; 
   //   packet.channel = sTopic.substring( sTopic.lastIndexOf("/")+1 , sTopic.length()).toInt();
@@ -164,6 +152,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
   Serial.println();
+  //set a failsafe pin that toggles all lights
+  pinMode(D6, INPUT_PULLUP);
   remote.startTransmitter(D5);
   wifiConnectHandler = WiFi.onStationModeGotIP(onWifiConnect);
   wifiDisconnectHandler = WiFi.onStationModeDisconnected(onWifiDisconnect);
@@ -178,10 +168,13 @@ void setup() {
   
   light1.uid = "living_room_rf_light_1";
   light1.name = "livingroom light 1";
+
   light2.uid = "living_room_rf_light_2";
   light2.name = "livingroom light 2";
+  
   light3.uid = "living_room_rf_light_3";
   light3.name = "livingroom light 3";
+  
   light4.uid = "living_room_rf_light_4";
   light4.name = "livingroom light 4";
 
@@ -199,5 +192,7 @@ void loop() {
       remote.sendPacket(packet, 3);
       lastTime = millis();
   }
+
+  
 
 }
