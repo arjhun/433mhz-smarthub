@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>433mhz hub</title>
+</head>
+<style>
+    label {
+        display: block;
+    }
+</style>
+<script>
+    function toSnakeCase(str) {
+        return str
+            .trim() // Remove leading/trailing whitespace
+            .replace(/[^a-zA-Z\s]/g, '') // Remove non-alphabetic characters
+            .replace(/\s+/g, '_') // Replace spaces with underscores
+            .replace(/([a-z])([A-Z])/g, '$1_$2') // Add underscores between lowercase and uppercase letters
+            .toLowerCase(); // Convert the entire string to lowercase
+    }
+</script>
+
+    <body>
+        <h2>Wifi</h2>
+        <form name="wifi" method="post">
+            <label for="ssid">SSID
+                <input id="name" name="name" type="text">
+            </label>
+            <label for="channel_id"> Channel id
+                <input type="number">
+            </label>
+            <label for="remote_id"> Remote id
+                <input type="number">
+            </label>
+            <button>Add Device</button>
+        </form>
+        <h2>Mqtt</h2>
+        <form name="mqtt" action="" method="post">
+            <label for="protocol">Protocol
+                <select id="protocol" name="protocol">
+                    <option value="0">flamingo</option>
+                </select>
+            </label>
+            <label for="name">Name
+                <input id="name" name="name" type="text">
+            </label>
+            <label for="channel_id"> Channel id
+                <input type="number">
+            </label>
+            <label for="remote_id"> Remote id
+                <input type="number">
+            </label>
+            <button>Add Device</button>
+        </form>
+        <h2>Add new device</h2>
+        <form name="device" action="" method="post">
+            <label for="protocol">Protocol
+                <select id="protocol" name="protocol">
+                    <option value="0">flamingo</option>
+                </select>
+            </label>
+            <label for="name">Name
+                <input id="name" name="name" type="text">
+            </label>
+            <label for="channel_id"> Channel id
+                <input type="number">
+            </label>
+            <label for="remote_id"> Remote id
+                <input type="number">
+            </label>
+            <button>Add Device</button>
+        </form>
+        <devices>
+            <h2>Devices</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>UID</th>
+                        <th>Channel Id</th>
+                        <th>Remote Id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>livingroom Light 1</td>
+                    <td><code>livingroom_light_1</code></td>
+                    <td>1</td>
+                    <td>1</td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    </devices>
+                    </body>
+                    
+                    </html>
